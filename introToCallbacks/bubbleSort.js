@@ -5,9 +5,15 @@ const reader = readline.createInterface({
   output: process.stdout
 });
 
-
 function absurdBubbleSort(arr, sortCompletionCallback) {
-
+    function outerBubbleSortLoop(madeAnySwaps) {
+        if (madeAnySwaps == true) {
+            innerBubbleSortLoop(arr, 0, false, outerBubbleSortLoop);
+        } else if (madeAnySwaps == false) {
+            sortCompletionCallback(arr);
+        }
+    }
+    outerBubbleSortLoop(true);
 }
 
 function askIfGreaterThan(el1, el2, callback) {
@@ -28,17 +34,16 @@ function innerBubbleSortLoop(arr, i, madeAnySwaps, outerBubbleSortLoop) {
                 const temp = arr[i];
                 arr[i] = arr[i+1];
                 arr[i+1] = temp;
-                madeAnySwaps += 1;
-                console.log(`${arr}`);
-                innerBubbleSortLoop(arr, i+1, madeAnySwaps, outerBubbleSortLoop);
-            } 
+                madeAnySwaps = true;
+            }
+            innerBubbleSortLoop(arr, i+1, madeAnySwaps, outerBubbleSortLoop);
         });
     } else if (i == (arr.length - 1)) {
         outerBubbleSortLoop(madeAnySwaps);
     }
 }
 
-// innerBubbleSortLoop([5,3,0], 0, 0, function() {
-//     console.log("In outer bubble sort")
-// })
-
+absurdBubbleSort([3, 2, 1], function (arr) {
+    console.log("Sorted array: " + JSON.stringify(arr));
+    reader.close();
+});
