@@ -1,12 +1,14 @@
 Function.prototype.myThrottle = function(interval) {
-  // console.log(`${this}`);
   let tooSoon = false;
+  const method = this;
   return function() {
     if (!tooSoon) {
       tooSoon = true;
-      setTimeout(this, interval);
-      tooSoon = false;
-    }
+      setTimeout(function() {
+        tooSoon = false;
+      }, interval);
+      method.apply({});
+    } 
   };
 }
 
@@ -36,9 +38,7 @@ Function.prototype.myThrottle = function(interval) {
 
 // neuron.fire = neuron.fire.myThrottle(500);
 
-// // const interval = setInterval(() => {
-// //   neuron.fire();
-// // }, 10);
+
 
 // This time, if your Function#myThrottle worked correctly,
 // the Neuron#fire function should only be able to execute
@@ -50,7 +50,7 @@ Function.prototype.myThrottle = function(interval) {
 
 class Neuron {
   constructor() {
-    this.fire = this.fire.myThrottle(500);
+    this.fire = this.fire.myThrottle(1000);
   }
 
   fire() {
@@ -60,3 +60,7 @@ class Neuron {
 
 randomNeuron = new Neuron();
 randomNeuron.fire();
+
+const interval = setInterval(() => {
+  randomNeuron.fire();
+}, 10);
