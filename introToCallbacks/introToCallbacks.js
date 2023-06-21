@@ -42,7 +42,7 @@ class Clock {
 }
 
 
-const clock = new Clock();
+// const clock = new Clock();
 // clock._tick();
 
 // console.log(clock.printTime());
@@ -52,3 +52,52 @@ const clock = new Clock();
 
 // boundBark = calzone.bark.bind(calzone)
 // console.log(boundBark());
+
+
+const readline = require('readline');
+
+// const reader = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
+
+function addNumbers(sum, numsLeft, completionCallback) {
+  if (numsLeft === 0) {
+    reader.close();
+    completionCallback(sum);
+  } else if (numsLeft > 0) {
+    reader.question("Please enter a number:", num => {
+      num = parseInt(num);
+      partialSum = sum + num;
+      addNumbers(partialSum, numsLeft-=1, completionCallback);
+    });
+  }
+}
+
+// addNumbers(0, 3, sum => console.log(`Total Sum: ${sum}`));
+
+Function.prototype.myBind = function(context) {
+  return () => {
+    return this.apply(context);
+  };
+}
+
+class Lamp {
+  constructor() {
+    this.name = "a lamp";
+  }
+}
+
+const turnOn = function () {
+  console.log("Turning on " + this.name);
+};
+
+const lamp = new Lamp();
+
+// turnOn(); // should not work the way we want it to
+
+const boundTurnOn = turnOn.bind(lamp);
+const myBoundTurnOn = turnOn.myBind(lamp);
+
+boundTurnOn(); // should say "Turning on a lamp"
+myBoundTurnOn(); // should say "Turning on a lamp"
