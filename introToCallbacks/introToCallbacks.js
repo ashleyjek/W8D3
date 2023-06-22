@@ -2,7 +2,7 @@
 class Clock {
   
   constructor() {
-    this.date = new Date
+    this.date = new Date();
     this.hour = this.date.getHours();
     this.minute = this.date.getMinutes();
     this.second = this.date.getSeconds();
